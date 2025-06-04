@@ -1,11 +1,13 @@
 // lib/widgets/document_form_fields.dart
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../services/nfc_service.dart';
 import '../../data/models/category.dart';
 //import 'add_category_dialog.dart';
 import 'location_dialog.dart';
+import '../../widgets/labeled_text_field.dart';
+import '../../widgets/date_picker_field.dart';
+import '../../widgets/category_selector.dart';
 
 class DocumentFormFields extends StatefulWidget {
   final TextEditingController titleController;
@@ -60,21 +62,6 @@ class DocumentFormFields extends StatefulWidget {
 }
 
 class _DocumentFormFieldsState extends State<DocumentFormFields> {
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime initial = DateTime.now();
-    if (widget.dateController.text.isNotEmpty) {
-      initial = DateTime.tryParse(widget.dateController.text) ?? initial;
-    }
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: initial,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null && mounted) {
-      widget.dateController.text = DateFormat('yyyy-MM-dd').format(picked);
-    }
-  }
 
   Future<void> _readNfcTag() async {
     try {
@@ -102,29 +89,17 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
+        LabeledTextField(
           controller: widget.titleController,
-          decoration: const InputDecoration(labelText: 'Título*'),
+          label: 'Título*',
           validator: (value) =>
               (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                value: widget.selectedCategoryId,
-                items: widget.categories.map((cat) => DropdownMenuItem(value: cat.id, child: Text(cat.name))).toList(),
-                onChanged: widget.onCategoryChanged,
-                decoration: const InputDecoration(labelText: 'Categoría'),
-                validator: (val) => val == null ? 'Campo obligatorio' : null,
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: widget.onAddCategory,
-            ),
-          ],
+        CategorySelector(
+          categories: widget.categories,
+          selectedId: widget.selectedCategoryId,
+          onChanged: widget.onCategoryChanged,
+          onAdd: widget.onAddCategory,
         ),
         buildLocationDropdown(
           context,
@@ -159,43 +134,34 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
         Row(
           children: [
             Expanded(
-              child: TextFormField(
+              child: LabeledTextField(
                 controller: widget.referenceController,
-                decoration: const InputDecoration(labelText: 'Nº de referencia (NFC)'),
+                label: 'Nº de referencia (NFC)',
                 validator: (value) =>
                     (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
             IconButton(icon: const Icon(Icons.nfc), onPressed: _readNfcTag),
           ],
         ),
-        TextFormField(
+        LabeledTextField(
           controller: widget.noteController,
-          decoration: const InputDecoration(labelText: 'Nota (opcional)'),
+          label: 'Nota (opcional)',
           validator: (value) =>
               (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
-        TextFormField(
+        DatePickerField(
           controller: widget.dateController,
-          decoration: InputDecoration(
-            labelText: 'Fecha de caducidad (opcional)',
-            suffixIcon: IconButton(icon: const Icon(Icons.clear), onPressed: () => widget.dateController.clear()),
-          ),
-          readOnly: true,
-          onTap: () => _selectDate(context),
+          label: 'Fecha de caducidad (opcional)',
           validator: (value) =>
               (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
-        TextFormField(
+        LabeledTextField(
           controller: widget.reminderController,
-          decoration: const InputDecoration(labelText: 'Recordatorio días antes (opcional)'),
+          label: 'Recordatorio días antes (opcional)',
           keyboardType: TextInputType.number,
           validator: (value) =>
               (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SwitchListTile(
           value: widget.isPrivate,
