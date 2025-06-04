@@ -90,8 +90,8 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
   }
 
   Future<void> _saveDocument() async {
+    if (!_formKey.currentState!.validate()) return;
     if (_isSaving ||
-        !_formKey.currentState!.validate() ||
         selectedCategoryId == null ||
         selectedRoom == null ||
         selectedArea == null ||

@@ -107,6 +107,7 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
           decoration: const InputDecoration(labelText: 'Título*'),
           validator: (value) =>
               (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         Row(
           children: [
@@ -161,12 +162,21 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
               child: TextFormField(
                 controller: widget.referenceController,
                 decoration: const InputDecoration(labelText: 'Nº de referencia (NFC)'),
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
             IconButton(icon: const Icon(Icons.nfc), onPressed: _readNfcTag),
           ],
         ),
-        TextFormField(controller: widget.noteController, decoration: const InputDecoration(labelText: 'Nota (opcional)')),
+        TextFormField(
+          controller: widget.noteController,
+          decoration: const InputDecoration(labelText: 'Nota (opcional)'),
+          validator: (value) =>
+              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+        ),
         TextFormField(
           controller: widget.dateController,
           decoration: InputDecoration(
@@ -175,11 +185,17 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
           ),
           readOnly: true,
           onTap: () => _selectDate(context),
+          validator: (value) =>
+              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         TextFormField(
           controller: widget.reminderController,
           decoration: const InputDecoration(labelText: 'Recordatorio días antes (opcional)'),
           keyboardType: TextInputType.number,
+          validator: (value) =>
+              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SwitchListTile(
           value: widget.isPrivate,
