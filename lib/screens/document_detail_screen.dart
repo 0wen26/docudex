@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../data/models/document.dart';
 import '../data/models/category.dart';
 import '../database/database_helper.dart';
+import '../utils/app_utils.dart';
+import '../utils/document_utils.dart';
 import 'add_edit_document_screen.dart';
 
 class DocumentDetailScreen extends StatelessWidget {
@@ -13,27 +15,12 @@ class DocumentDetailScreen extends StatelessWidget {
 
   const DocumentDetailScreen({super.key, required this.document, required this.category});
 
-  IconData _iconFromCodePoint(String codePoint) {
-    return IconData(int.parse(codePoint), fontFamily: 'MaterialIcons');
-  }
-
-  Color _getUrgencyColor(String? dateStr) {
-    if (dateStr == null || dateStr.isEmpty) return Colors.grey;
-    final now = DateTime.now();
-    final date = DateTime.tryParse(dateStr);
-    if (date == null) return Colors.grey;
-
-    final diff = date.difference(now).inDays;
-    if (diff < 0) return Colors.red;
-    if (diff <= 7) return Colors.orange;
-    return Colors.green;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final color = Color(int.parse(category.colorHex.replaceFirst('#', '0xff')));
-    final icon = _iconFromCodePoint(category.iconName);
-    final urgencyColor = _getUrgencyColor(document.date);
+    final color = hexToColor(category.colorHex);
+    final icon = iconFromCodePoint(category.iconName);
+    final urgencyColor = getUrgencyColor(document.date);
 
     return Scaffold(
       appBar: AppBar(
