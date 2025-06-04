@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:docudex/data/models/document.dart';
 import 'package:docudex/utils/document_utils.dart';
 import 'package:docudex/utils/app_utils.dart';
+import 'package:docudex/utils/icon_utils.dart';
 
 class DocumentCard extends StatelessWidget {
   final Document document;

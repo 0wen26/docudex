@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:ndef/ndef.dart' as ndef;
+import '../../services/nfc_service.dart';
 import '../../data/models/category.dart';
 //import 'add_category_dialog.dart';
 import 'location_dialog.dart';
@@ -28,6 +28,7 @@ class DocumentFormFields extends StatefulWidget {
   final Future<void> Function() onAddCategory;
   final Future<void> Function() onReload;
   final VoidCallback onReadNfc;
+  final bool isLoading;
 
   const DocumentFormFields({super.key,
     required this.titleController,
@@ -52,7 +53,8 @@ class DocumentFormFields extends StatefulWidget {
     required this.onSubmit,
     required this.onAddCategory,
     required this.onReload,
-    required this.onReadNfc});
+    required this.onReadNfc,
+    required this.isLoading});
 
   @override
   State<DocumentFormFields> createState() => _DocumentFormFieldsState();
@@ -77,44 +79,22 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
 
   Future<void> _readNfcTag() async {
     try {
-      final availability = await FlutterNfcKit.nfcAvailability;
-      if (availability != NFCAvailability.available) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('NFC no disponible.')),
-        );
-        return;
-      }
-
-      await FlutterNfcKit.poll(timeout: const Duration(seconds: 10));
-      final records = await FlutterNfcKit.readNDEFRecords();
-
-      String? tagText;
-      for (var record in records) {
-        if (record is ndef.TextRecord) {
-          tagText = record.text;
-          break;
-        }
-      }
-
-      await FlutterNfcKit.finish();
-
+      final id = await NfcService.readTagId();
       if (!mounted) return;
-
-      if (tagText != null && tagText.trim().isNotEmpty) {
-        widget.referenceController.text = tagText;
+      if (id != null) {
+        widget.referenceController.text = id;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Referencia leída: \$tagText')),
+          SnackBar(content: Text('Referencia le\u00edda: ' + id)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No se encontró texto válido en la etiqueta.')),
+          const SnackBar(content: Text('No se pudo leer la etiqueta.')),
         );
       }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al leer NFC: \$e')),
+        SnackBar(content: Text('Error al leer NFC: ' + e.toString())),
       );
     }
   }
@@ -125,7 +105,9 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
       children: [
         TextFormField(
           controller: widget.titleController,
-          decoration: const InputDecoration(labelText: 'Título'),
+          decoration: const InputDecoration(labelText: 'Título*'),
+          validator: (value) =>
+              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
         ),
         Row(
           children: [
@@ -135,6 +117,7 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
                 items: widget.categories.map((cat) => DropdownMenuItem(value: cat.id, child: Text(cat.name))).toList(),
                 onChanged: widget.onCategoryChanged,
                 decoration: const InputDecoration(labelText: 'Categoría'),
+                validator: (val) => val == null ? 'Campo obligatorio' : null,
               ),
             ),
             IconButton(
@@ -143,9 +126,36 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
             ),
           ],
         ),
-        buildLocationDropdown(context, 'Sala', 'room', widget.rooms, widget.selectedRoom, widget.onRoomChanged, widget.onReload),
-        buildLocationDropdown(context, 'Área', 'area', widget.areas, widget.selectedArea, widget.onAreaChanged, widget.onReload),
-        buildLocationDropdown(context, 'Caja', 'box', widget.boxes, widget.selectedBox, widget.onBoxChanged, widget.onReload),
+        buildLocationDropdown(
+          context,
+          'Sala',
+          'room',
+          widget.rooms,
+          widget.selectedRoom,
+          widget.onRoomChanged,
+          widget.onReload,
+          (val) => val == null ? 'Campo obligatorio' : null,
+        ),
+        buildLocationDropdown(
+          context,
+          'Área',
+          'area',
+          widget.areas,
+          widget.selectedArea,
+          widget.onAreaChanged,
+          widget.onReload,
+          (val) => val == null ? 'Campo obligatorio' : null,
+        ),
+        buildLocationDropdown(
+          context,
+          'Caja',
+          'box',
+          widget.boxes,
+          widget.selectedBox,
+          widget.onBoxChanged,
+          widget.onReload,
+          (val) => val == null ? 'Campo obligatorio' : null,
+        ),
         Row(
           children: [
             Expanded(
@@ -179,8 +189,14 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: widget.onSubmit,
-          child: const Text('Guardar'),
+          onPressed: widget.isLoading ? null : widget.onSubmit,
+          child: widget.isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(),
+                )
+              : const Text('Guardar'),
         ),
       ],
     );
