@@ -1,8 +1,7 @@
 // lib/screens/nfc_scan_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:ndef/ndef.dart' as ndef;
+import '../services/nfc_service.dart';
 import '../data/models/document.dart';
 import '../database/database_helper.dart';
 import '../data/models/category.dart';
@@ -39,28 +38,7 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
     });
 
     try {
-      final availability = await FlutterNfcKit.nfcAvailability;
-      if (availability != NFCAvailability.available) {
-        if (!mounted) return;
-        setState(() {
-          error = 'NFC no disponible en este dispositivo.';
-          scanning = false;
-        });
-        return;
-      }
-
-      await FlutterNfcKit.poll(timeout: const Duration(seconds: 10));
-      final records = await FlutterNfcKit.readNDEFRecords();
-
-      String? tagText;
-      for (var record in records) {
-        if (record is ndef.TextRecord) {
-          tagText = record.text;
-          break;
-        }
-      }
-
-      await FlutterNfcKit.finish();
+      final tagText = await NfcService.readNdefText();
 
       if (!mounted) return;
 
