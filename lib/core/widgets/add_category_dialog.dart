@@ -5,6 +5,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:docudex/data/models/category.dart';
 import 'package:docudex/domain/repositories/category_repository.dart';
 import 'package:docudex/injection_container.dart';
+import '../../widgets/labeled_text_field.dart';
 
 final List<IconData> availableIcons = [
   Icons.folder,
@@ -58,9 +59,10 @@ Future<bool> showAddCategoryDialog(BuildContext context) async {
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
+            LabeledTextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Nombre'),
+              label: 'Nombre',
+              isRequired: true,
             ),
             const SizedBox(height: 20),
             const Text('Color', style: TextStyle(fontWeight: FontWeight.bold)),
