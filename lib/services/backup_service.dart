@@ -4,11 +4,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import '../data/models/document.dart';
-import '../database/database_helper.dart';
+import '../domain/repositories/document_repository.dart';
+import '../injection_container.dart';
 
 class BackupService {
   Future<String> exportToJson() async {
-    final documents = await DatabaseHelper().getDocuments();
+    final documents = await getIt<DocumentRepository>().getDocuments();
     final jsonList = documents.map((doc) => doc.toMap()).toList();
     final jsonString = jsonEncode(jsonList);
 
@@ -25,7 +26,7 @@ class BackupService {
     int importedCount = 0;
     for (final item in jsonList) {
       final doc = Document.fromMap(item);
-      await DatabaseHelper().insertDocument(doc);
+      await getIt<DocumentRepository>().insertDocument(doc);
       importedCount++;
     }
 
