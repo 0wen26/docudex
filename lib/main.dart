@@ -1,9 +1,11 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'screens/document_list_screen.dart';
+import 'injection_container.dart';
 
 void main() {
-  runApp(ArchivoCentralApp());
+  setupDependencies();
+  runApp(const ArchivoCentralApp());
 }
 
 class ArchivoCentralApp extends StatelessWidget {
