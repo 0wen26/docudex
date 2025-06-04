@@ -1,0 +1,40 @@
+name: docudex
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: any
+  path: any
+  path_provider: any
+  cupertino_icons: any
+  nfc_manager: any
+  permission_handler: any
+  share_plus: any
+  file_picker: any
+  intl: any
+  flutter_local_notifications: any
+  timezone: any
+  flutter_nfc_kit: any
+  ndef: any
+  flutter_colorpicker: any
+  collection: any
+  image_picker: any
+  get_it: any
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
