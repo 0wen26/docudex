@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:docudex/data/models/document.dart';
 import 'package:docudex/utils/document_utils.dart';
+import 'package:docudex/utils/app_utils.dart';
 
 class DocumentCard extends StatelessWidget {
   final Document document;
@@ -23,7 +24,7 @@ class DocumentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final urgencyColor = getUrgencyColor(document.date);
-    final borderColor = Color(int.parse(categoryColor.replaceFirst('#', '0xff')));
+    final borderColor = hexToColor(categoryColor);
     final icon = iconFromCodePoint(categoryIcon);
 
     return Card(

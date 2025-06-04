@@ -15,7 +15,3 @@ Color getUrgencyColor(String? dateStr) {
   return Colors.green;
 }
 
-/// Convierte un codePoint en un [IconData] (asumiendo 'MaterialIcons')
-IconData iconFromCodePoint(String codePoint) {
-  return IconData(int.parse(codePoint), fontFamily: 'MaterialIcons');
-}

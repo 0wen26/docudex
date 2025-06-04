@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../data/models/category.dart';
 import '../database/database_helper.dart';
+import '../utils/app_utils.dart';
 
 class CategoryManagementScreen extends StatefulWidget {
   const CategoryManagementScreen({super.key});
@@ -123,9 +124,6 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
     }
   }
 
-  IconData _iconFromCodePoint(String codePoint) {
-    return IconData(int.parse(codePoint), fontFamily: 'MaterialIcons');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +133,8 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final cat = categories[index];
-          final color = Color(int.parse(cat.colorHex.replaceFirst('#', '0xff')));
-          final icon = _iconFromCodePoint(cat.iconName);
+          final color = hexToColor(cat.colorHex);
+          final icon = iconFromCodePoint(cat.iconName);
           return ListTile(
             leading: CircleAvatar(backgroundColor: color, child: Icon(icon, color: Colors.white)),
             title: Text(cat.name),

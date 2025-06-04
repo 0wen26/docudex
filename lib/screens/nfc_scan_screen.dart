@@ -6,6 +6,7 @@ import 'package:ndef/ndef.dart' as ndef;
 import '../data/models/document.dart';
 import '../database/database_helper.dart';
 import '../data/models/category.dart';
+import '../utils/app_utils.dart';
 import 'document_detail_screen.dart';
 
 class NfcScanScreen extends StatefulWidget {
@@ -133,9 +134,9 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
                                 final cat = _getCategory(doc.categoryId);
                                 return ListTile(
                                   leading: CircleAvatar(
-                                    backgroundColor: Color(int.parse(cat.colorHex.replaceFirst('#', '0xff'))),
+                                    backgroundColor: hexToColor(cat.colorHex),
                                     child: Icon(
-                                      IconData(int.parse(cat.iconName), fontFamily: 'MaterialIcons'),
+                                      iconFromCodePoint(cat.iconName),
                                       color: Colors.white,
                                     ),
                                   ),
