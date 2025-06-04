@@ -7,6 +7,7 @@ import '../data/models/document.dart';
 import '../database/database_helper.dart';
 import '../data/models/category.dart';
 import '../utils/app_utils.dart';
+import '../utils/icon_utils.dart';
 import 'document_detail_screen.dart';
 
 class NfcScanScreen extends StatefulWidget {

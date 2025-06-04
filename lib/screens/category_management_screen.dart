@@ -5,6 +5,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../data/models/category.dart';
 import '../database/database_helper.dart';
 import '../utils/app_utils.dart';
+import '../utils/icon_utils.dart';
 
 class CategoryManagementScreen extends StatefulWidget {
   const CategoryManagementScreen({super.key});
