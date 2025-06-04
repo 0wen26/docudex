@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import '../../services/nfc_service.dart';
 import '../../data/models/category.dart';
 //import 'add_category_dialog.dart';
-import 'location_dialog.dart';
+
 import '../../widgets/labeled_text_field.dart';
 import '../../widgets/date_picker_field.dart';
 import '../../widgets/category_selector.dart';
+import '../../widgets/location_dropdown.dart';
 
 class DocumentFormFields extends StatefulWidget {
   final TextEditingController titleController;
@@ -16,7 +17,6 @@ class DocumentFormFields extends StatefulWidget {
   final TextEditingController dateController;
   final TextEditingController reminderController;
   final List<Category> categories;
-  final List<String> rooms, areas, boxes;
   final int? selectedCategoryId;
   final String? selectedRoom, selectedArea, selectedBox;
   final bool isPrivate;
@@ -27,7 +27,6 @@ class DocumentFormFields extends StatefulWidget {
   final void Function(bool) onPrivateChanged;
   final VoidCallback onSubmit;
   final Future<void> Function() onAddCategory;
-  final Future<void> Function() onReload;
   final VoidCallback onReadNfc;
   final bool isSaving;
 
@@ -38,9 +37,6 @@ class DocumentFormFields extends StatefulWidget {
     required this.dateController,
     required this.reminderController,
     required this.categories,
-    required this.rooms,
-    required this.areas,
-    required this.boxes,
     required this.selectedCategoryId,
     required this.selectedRoom,
     required this.selectedArea,
@@ -53,7 +49,6 @@ class DocumentFormFields extends StatefulWidget {
     required this.onPrivateChanged,
     required this.onSubmit,
     required this.onAddCategory,
-    required this.onReload,
     required this.onReadNfc,
     required this.isSaving});
 
@@ -91,9 +86,8 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
       children: [
         LabeledTextField(
           controller: widget.titleController,
-          label: 'Título*',
-          validator: (value) =>
-              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+          label: 'Título',
+          isRequired: true,
         ),
         CategorySelector(
           categories: widget.categories,
@@ -101,35 +95,23 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
           onChanged: widget.onCategoryChanged,
           onAdd: widget.onAddCategory,
         ),
-        buildLocationDropdown(
-          context,
-          'Sala',
-          'room',
-          widget.rooms,
-          widget.selectedRoom,
-          widget.onRoomChanged,
-          widget.onReload,
-          (val) => val == null ? 'Campo obligatorio' : null,
+        LocationDropdown(
+          type: 'room',
+          value: widget.selectedRoom,
+          onChanged: widget.onRoomChanged,
+          validator: (val) => val == null ? 'Campo obligatorio' : null,
         ),
-        buildLocationDropdown(
-          context,
-          'Área',
-          'area',
-          widget.areas,
-          widget.selectedArea,
-          widget.onAreaChanged,
-          widget.onReload,
-          (val) => val == null ? 'Campo obligatorio' : null,
+        LocationDropdown(
+          type: 'area',
+          value: widget.selectedArea,
+          onChanged: widget.onAreaChanged,
+          validator: (val) => val == null ? 'Campo obligatorio' : null,
         ),
-        buildLocationDropdown(
-          context,
-          'Caja',
-          'box',
-          widget.boxes,
-          widget.selectedBox,
-          widget.onBoxChanged,
-          widget.onReload,
-          (val) => val == null ? 'Campo obligatorio' : null,
+        LocationDropdown(
+          type: 'box',
+          value: widget.selectedBox,
+          onChanged: widget.onBoxChanged,
+          validator: (val) => val == null ? 'Campo obligatorio' : null,
         ),
         Row(
           children: [
@@ -137,8 +119,7 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
               child: LabeledTextField(
                 controller: widget.referenceController,
                 label: 'Nº de referencia (NFC)',
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
+                isRequired: true,
               ),
             ),
             IconButton(icon: const Icon(Icons.nfc), onPressed: _readNfcTag),
@@ -147,21 +128,15 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
         LabeledTextField(
           controller: widget.noteController,
           label: 'Nota (opcional)',
-          validator: (value) =>
-              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
         ),
         DatePickerField(
           controller: widget.dateController,
           label: 'Fecha de caducidad (opcional)',
-          validator: (value) =>
-              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
         ),
         LabeledTextField(
           controller: widget.reminderController,
           label: 'Recordatorio días antes (opcional)',
           keyboardType: TextInputType.number,
-          validator: (value) =>
-              (value == null || value.isEmpty) ? 'Campo obligatorio' : null,
         ),
         SwitchListTile(
           value: widget.isPrivate,
