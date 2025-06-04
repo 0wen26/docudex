@@ -17,15 +17,23 @@ class _AddEditDocumentScreenState extends State<AddEditDocumentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.existingDocument == null ? 'Añadir Documento' : 'Editar Documento'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: AddEditDocumentForm(
-          existingDocument: widget.existingDocument,
-          onSaved: () => Navigator.pop(context, true),
-        ),
+      appBar: _buildAppBar(),
+      body: _buildForm(),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: Text(widget.existingDocument == null ? 'Añadir Documento' : 'Editar Documento'),
+    );
+  }
+
+  Widget _buildForm() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: AddEditDocumentForm(
+        existingDocument: widget.existingDocument,
+        onSaved: () => Navigator.pop(context, true),
       ),
     );
   }

@@ -10,6 +10,7 @@ import '../../data/models/category.dart';
 import '../../database/database_helper.dart';
 import 'document_form_fields.dart';
 import 'add_category_dialog.dart';
+import '../../document_form_controllers.dart';
 
 class AddEditDocumentForm extends StatefulWidget {
   final Document? existingDocument;
@@ -22,11 +23,9 @@ class AddEditDocumentForm extends StatefulWidget {
 }
 
 class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
-  final _titleController = TextEditingController();
-  final _noteController = TextEditingController();
-  final _referenceController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _reminderController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _controllers = DocumentFormControllers();
+  bool _isSaving = false;
 
   List<Category> categories = [];
   List<String> rooms = [], areas = [], boxes = [];
@@ -57,14 +56,14 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
 
       final doc = widget.existingDocument;
       if (doc != null) {
-        _titleController.text = doc.title;
+        _controllers.title.text = doc.title;
         selectedRoom = doc.locationRoom;
         selectedArea = doc.locationArea;
         selectedBox = doc.locationBox;
-        _noteController.text = doc.note ?? '';
-        _referenceController.text = doc.referenceNumber ?? '';
-        _dateController.text = doc.date ?? '';
-        _reminderController.text = doc.reminderDays?.toString() ?? '';
+        _controllers.note.text = doc.note ?? '';
+        _controllers.reference.text = doc.referenceNumber ?? '';
+        _controllers.date.text = doc.date ?? '';
+        _controllers.reminder.text = doc.reminderDays?.toString() ?? '';
         isPrivate = doc.isPrivate;
         selectedCategoryId = doc.categoryId;
         _imagePath = doc.imagePath;
@@ -91,29 +90,28 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
   }
 
   Future<void> _saveDocument() async {
-    if (_titleController.text.trim().isEmpty ||
+    if (!_formKey.currentState!.validate() ||
         selectedCategoryId == null ||
         selectedRoom == null ||
         selectedArea == null ||
         selectedBox == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Completa todos los campos obligatorios.')),
-      );
       return;
     }
+
+    setState(() => _isSaving = true);
 
     final now = DateTime.now().toIso8601String();
     final doc = Document(
       id: widget.existingDocument?.id,
-      title: _titleController.text.trim(),
+      title: _controllers.title.text.trim(),
       categoryId: selectedCategoryId!,
       locationRoom: selectedRoom!,
       locationArea: selectedArea!,
       locationBox: selectedBox!,
-      note: _noteController.text.trim().isEmpty ? null : _noteController.text.trim(),
-      referenceNumber: _referenceController.text.trim().isEmpty ? null : _referenceController.text.trim(),
-      date: _dateController.text.trim().isEmpty ? null : _dateController.text.trim(),
-      reminderDays: int.tryParse(_reminderController.text.trim()),
+      note: _controllers.note.text.trim().isEmpty ? null : _controllers.note.text.trim(),
+      referenceNumber: _controllers.reference.text.trim().isEmpty ? null : _controllers.reference.text.trim(),
+      date: _controllers.date.text.trim().isEmpty ? null : _controllers.date.text.trim(),
+      reminderDays: int.tryParse(_controllers.reminder.text.trim()),
       isPrivate: isPrivate,
       nfcId: widget.existingDocument?.nfcId,
       imagePath: _imagePath,
@@ -127,19 +125,33 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
       await DatabaseHelper().updateDocument(doc);
     }
 
+    setState(() => _isSaving = false);
     widget.onSaved?.call();
   }
 
   @override
+  void dispose() {
+    _controllers.title.dispose();
+    _controllers.note.dispose();
+    _controllers.reference.dispose();
+    _controllers.date.dispose();
+    _controllers.reminder.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DocumentFormFields(
-          titleController: _titleController,
-          noteController: _noteController,
-          referenceController: _referenceController,
-          dateController: _dateController,
-          reminderController: _reminderController,
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          DocumentFormFields(
+          titleController: _controllers.title,
+          noteController: _controllers.note,
+          referenceController: _controllers.reference,
+          dateController: _controllers.date,
+          reminderController: _controllers.reminder,
+          isSaving: _isSaving,
           categories: categories,
           rooms: rooms,
           areas: areas,
