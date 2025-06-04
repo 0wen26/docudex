@@ -71,30 +71,6 @@
 
 ---
 
-## 🟡 Pendiente o en progreso
-
-### 📌 Vincular etiqueta NFC a documento
-- Al leer una etiqueta, buscar documento por título o referencia.
-- Si se encuentra, navegar al detalle.
-- Si no, mostrar mensaje de “no encontrado”.
-
-### ✍️ Escritura NFC (opcional)
-- Posibilidad de escribir en la etiqueta desde el formulario o el detalle.
-
-### 🔍 Búsqueda y filtros
-- Buscar por título, ubicación o referencia.
-- Filtros por categoría o urgencia.
-
-### 📦 Exportación y copia de seguridad
-- Exportar lista de documentos.
-- Importar desde archivo (Excel, JSON...).
-
-### 🎨 Mejoras visuales opcionales
-- Modo oscuro consistente.
-- Animaciones suaves en transiciones.
-
----
-
 ## 🚧 En desarrollo
 
 Docudex está en constante evolución. ¡Tu feedback es bienvenido!
