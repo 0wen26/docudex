@@ -10,6 +10,7 @@ import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 import '../utils/document_utils.dart';
 import 'add_edit_document_screen.dart';
+import '../widgets/shared/custom_app_bar.dart';
 
 class DocumentDetailScreen extends StatelessWidget {
   final Document document;
@@ -25,8 +26,8 @@ class DocumentDetailScreen extends StatelessWidget {
     final urgencyColor = getUrgencyColor(document.date);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalle del Documento'),
+      appBar: CustomAppBar(
+        title: 'Detalle del Documento',
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),

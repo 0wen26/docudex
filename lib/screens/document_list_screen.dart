@@ -13,6 +13,8 @@ import '../core/widgets/document_card.dart';
 import '../core/widgets/search_bar.dart';
 import '../core/widgets/filters_bar.dart';
 import '../core/widgets/sort_menu.dart';
+import '../widgets/shared/custom_app_bar.dart';
+import '../widgets/shared/empty_state.dart';
 import 'add_edit_document_screen.dart';
 import 'category_management_screen.dart';
 import 'document_detail_screen.dart';
@@ -180,8 +182,8 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis Documentos'),
+      appBar: CustomAppBar(
+        title: 'Mis Documentos',
         actions: [
           IconButton(icon: const Icon(Icons.upload_file), onPressed: _exportBackup, tooltip: 'Exportar JSON'),
           IconButton(icon: const Icon(Icons.download), onPressed: _importBackup, tooltip: 'Importar JSON'),
@@ -209,7 +211,7 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
           ),
           Expanded(
             child: filteredDocuments.isEmpty
-                ? const Center(child: Text('No hay documentos que coincidan'))
+                ? const EmptyState(message: 'No hay documentos que coincidan')
                 : ListView.builder(
                     itemCount: filteredDocuments.length,
                     itemBuilder: (context, index) {

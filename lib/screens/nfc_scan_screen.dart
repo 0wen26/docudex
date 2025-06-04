@@ -10,6 +10,8 @@ import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 import 'document_detail_screen.dart';
+import '../widgets/shared/custom_app_bar.dart';
+import '../widgets/shared/empty_state.dart';
 
 class NfcScanScreen extends StatefulWidget {
   const NfcScanScreen({super.key});
@@ -82,7 +84,7 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Leer etiqueta NFC')),
+      appBar: const CustomAppBar(title: 'Leer etiqueta NFC'),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: scanning
@@ -90,16 +92,7 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
             : error != null
                 ? Center(child: Text(error!, style: const TextStyle(color: Colors.red)))
                 : matchedDocs.isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.info_outline, size: 72),
-                          const SizedBox(height: 16),
-                          Text('Etiqueta leída: $tagId'),
-                          const SizedBox(height: 8),
-                          const Text('No se encontraron documentos vinculados.')
-                        ],
-                      )
+                    ? EmptyState(message: 'Etiqueta $tagId sin documentos vinculados')
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

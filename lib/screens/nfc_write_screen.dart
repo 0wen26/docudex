@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import '../widgets/shared/custom_app_bar.dart';
 
 class NfcWriteScreen extends StatefulWidget {
   const NfcWriteScreen({super.key});
@@ -123,10 +124,7 @@ class _NfcWriteScreenState extends State<NfcWriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Escribir en etiqueta NFC'),
-        elevation: 0,
-      ),
+      appBar: const CustomAppBar(title: 'Escribir en etiqueta NFC'),
       body: Stack(
         children: [
           Padding(

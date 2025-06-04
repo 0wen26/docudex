@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import '../data/models/document.dart';
 import '../core/widgets/add_edit_document_form.dart';
+import '../widgets/shared/custom_app_bar.dart';
 
 class AddEditDocumentScreen extends StatefulWidget {
   final Document? existingDocument;
@@ -23,8 +24,8 @@ class _AddEditDocumentScreenState extends State<AddEditDocumentScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      title: Text(widget.existingDocument == null ? 'Añadir Documento' : 'Editar Documento'),
+    return CustomAppBar(
+      title: widget.existingDocument == null ? 'Añadir Documento' : 'Editar Documento',
     );
   }
 

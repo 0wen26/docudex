@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../core/widgets/location_dialog.dart';
-import '../providers/location_provider.dart';
+import '../../core/widgets/location_dialog.dart';
+import '../../providers/location_provider.dart';
 
 class LocationDropdown extends StatelessWidget {
   final String type; // 'room', 'area', 'box'
