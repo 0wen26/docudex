@@ -1,7 +1,7 @@
 // lib/widgets/filters_bar.dart
 
 import 'package:flutter/material.dart';
-import '../models/category.dart';
+import '../../data/models/category.dart';
 
 class DocumentFiltersBar extends StatelessWidget {
   final List<Category> categories;

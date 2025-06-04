@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import '../models/document.dart';
-import '../models/category.dart';
-import '../database/database_helper.dart';
+import '../../data/models/document.dart';
+import '../../data/models/category.dart';
+import '../../database/database_helper.dart';
 import 'document_form_fields.dart';
 import 'add_category_dialog.dart';
 
