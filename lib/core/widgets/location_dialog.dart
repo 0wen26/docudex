@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../database/database_helper.dart';
+import '../../widgets/location_dropdown.dart';
 
 Future<bool> showAddLocationDialog(BuildContext context, String type) async {
   final controller = TextEditingController();
@@ -42,15 +43,17 @@ Widget buildLocationDropdown(
   String? selectedValue,
   void Function(String?) onChanged,
   VoidCallback onReload,
+  String? Function(String?)? validator,
 ) {
   return Row(
     children: [
       Expanded(
-        child: DropdownButtonFormField<String>(
+        child: LocationDropdown(
+          label: label,
+          options: values,
           value: selectedValue,
-          items: values.map((val) => DropdownMenuItem(value: val, child: Text(val))).toList(),
           onChanged: onChanged,
-          decoration: InputDecoration(labelText: label),
+          validator: validator,
         ),
       ),
       IconButton(
