@@ -7,6 +7,8 @@ import '../domain/repositories/category_repository.dart';
 import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
+import '../widgets/forms/icon_selector.dart';
+import '../widgets/shared/custom_app_bar.dart';
 
 class CategoryManagementScreen extends StatefulWidget {
   const CategoryManagementScreen({super.key});
@@ -75,15 +77,10 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
                 ),
                 const SizedBox(height: 10),
                 const Text('Icono'),
-                Wrap(
-                  spacing: 8,
-                  children: availableIcons.map((icon) => GestureDetector(
-                    onTap: () => setState(() => selectedIcon = icon),
-                    child: CircleAvatar(
-                      backgroundColor: selectedIcon == icon ? Colors.blueAccent : Colors.grey[300],
-                      child: Icon(icon, color: Colors.black),
-                    ),
-                  )).toList(),
+                IconSelector(
+                  icons: availableIcons,
+                  selected: selectedIcon,
+                  onSelected: (icon) => setState(() => selectedIcon = icon),
                 ),
               ],
             ),
@@ -130,23 +127,25 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Categorías')),
-      body: ListView.builder(
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final cat = categories[index];
-          final color = hexToColor(cat.colorHex);
-          final icon = iconFromCodePoint(cat.iconName);
-          return ListTile(
-            leading: CircleAvatar(backgroundColor: color, child: Icon(icon, color: Colors.white)),
-            title: Text(cat.name),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () => _deleteCategory(cat.id!),
+      appBar: const CustomAppBar(title: 'Categorías'),
+      body: categories.isEmpty
+          ? const EmptyState(message: 'Sin categorías creadas')
+          : ListView.builder(
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final cat = categories[index];
+                final color = hexToColor(cat.colorHex);
+                final icon = iconFromCodePoint(cat.iconName);
+                return ListTile(
+                  leading: CircleAvatar(backgroundColor: color, child: Icon(icon, color: Colors.white)),
+                  title: Text(cat.name),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _deleteCategory(cat.id!),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addCategory,
         child: const Icon(Icons.add),

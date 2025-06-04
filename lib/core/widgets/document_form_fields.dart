@@ -5,10 +5,10 @@ import '../../services/nfc_service.dart';
 import '../../data/models/category.dart';
 //import 'add_category_dialog.dart';
 
-import '../../widgets/labeled_text_field.dart';
-import '../../widgets/date_picker_field.dart';
+import '../../widgets/forms/labeled_text_field.dart';
+import '../../widgets/forms/date_picker_field.dart';
 import '../../widgets/category_selector.dart';
-import '../../widgets/location_dropdown.dart';
+import '../../widgets/forms/location_dropdown.dart';
 
 class DocumentFormFields extends StatefulWidget {
   final TextEditingController titleController;
