@@ -256,4 +256,10 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 }
