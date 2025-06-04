@@ -15,7 +15,7 @@ class Document {
   final String createdAt;
   final String updatedAt;
 
-  Document({
+  const Document({
     this.id,
     required this.title,
     required this.categoryId,
@@ -32,6 +32,82 @@ class Document {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  Document copyWith({
+    int? id,
+    String? title,
+    int? categoryId,
+    String? locationRoom,
+    String? locationArea,
+    String? locationBox,
+    String? note,
+    String? nfcId,
+    String? imagePath,
+    String? referenceNumber,
+    bool? isPrivate,
+    String? date,
+    int? reminderDays,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return Document(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      categoryId: categoryId ?? this.categoryId,
+      locationRoom: locationRoom ?? this.locationRoom,
+      locationArea: locationArea ?? this.locationArea,
+      locationBox: locationBox ?? this.locationBox,
+      note: note ?? this.note,
+      nfcId: nfcId ?? this.nfcId,
+      imagePath: imagePath ?? this.imagePath,
+      referenceNumber: referenceNumber ?? this.referenceNumber,
+      isPrivate: isPrivate ?? this.isPrivate,
+      date: date ?? this.date,
+      reminderDays: reminderDays ?? this.reminderDays,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Document &&
+        other.id == id &&
+        other.title == title &&
+        other.categoryId == categoryId &&
+        other.locationRoom == locationRoom &&
+        other.locationArea == locationArea &&
+        other.locationBox == locationBox &&
+        other.note == note &&
+        other.nfcId == nfcId &&
+        other.imagePath == imagePath &&
+        other.referenceNumber == referenceNumber &&
+        other.isPrivate == isPrivate &&
+        other.date == date &&
+        other.reminderDays == reminderDays &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        title,
+        categoryId,
+        locationRoom,
+        locationArea,
+        locationBox,
+        note,
+        nfcId,
+        imagePath,
+        referenceNumber,
+        isPrivate,
+        date,
+        reminderDays,
+        createdAt,
+        updatedAt,
+      );
 
   Map<String, dynamic> toMap() {
     return {
@@ -72,4 +148,7 @@ class Document {
       updatedAt: map['updatedAt'],
     );
   }
+
+  @override
+  String toString() => 'Document(id: \$id, title: \$title)';
 }

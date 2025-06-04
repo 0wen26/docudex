@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import '../data/models/document.dart';
 import '../data/models/category.dart';
 import '../database/database_helper.dart';
+import '../injection_container.dart';
+import '../domain/usecases/get_documents.dart';
 import '../services/backup_service.dart';
 import '../core/widgets/document_card.dart';
 import '../core/widgets/search_bar.dart';
@@ -41,7 +43,7 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
   }
 
   Future<void> _loadData() async {
-    final docs = await DatabaseHelper().getDocuments();
+    final docs = await getIt<GetDocuments>()();
     final cats = await DatabaseHelper().getCategories();
     setState(() {
       documents = docs;
