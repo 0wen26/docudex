@@ -9,7 +9,6 @@ import '../../data/models/document.dart';
 import '../../data/models/category.dart';
 import '../../domain/repositories/document_repository.dart';
 import '../../domain/repositories/category_repository.dart';
-import '../../domain/repositories/location_repository.dart';
 import '../../injection_container.dart';
 import 'document_form_fields.dart';
 import 'add_category_dialog.dart';
@@ -31,7 +30,6 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
   bool _isSaving = false;
 
   List<Category> categories = [];
-  List<String> rooms = [], areas = [], boxes = [];
   int? selectedCategoryId;
   String? selectedRoom, selectedArea, selectedBox;
   bool isPrivate = false;
@@ -45,17 +43,10 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
 
   Future<void> _loadData() async {
     final cats = await getIt<CategoryRepository>().getCategories();
-    final r = await getIt<LocationRepository>().getLocationValues('room');
-    final a = await getIt<LocationRepository>().getLocationValues('area');
-    final b = await getIt<LocationRepository>().getLocationValues('box');
-
     if (!mounted) return;
 
     setState(() {
       categories = cats;
-      rooms = r;
-      areas = a;
-      boxes = b;
 
       final doc = widget.existingDocument;
       if (doc != null) {
@@ -157,9 +148,6 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
           reminderController: _controllers.reminder,
           isSaving: _isSaving,
           categories: categories,
-          rooms: rooms,
-          areas: areas,
-          boxes: boxes,
           selectedCategoryId: selectedCategoryId,
           selectedRoom: selectedRoom,
           selectedArea: selectedArea,
@@ -172,7 +160,6 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
           onPrivateChanged: (val) => setState(() => isPrivate = val),
           onSubmit: _saveDocument,
           onAddCategory: _addCategory,
-          onReload: _loadData,
           onReadNfc: () {},
         ),
         const SizedBox(height: 20),

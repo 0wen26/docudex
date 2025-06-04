@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import '../../domain/repositories/location_repository.dart';
-import '../../widgets/location_dropdown.dart';
 import '../../injection_container.dart';
 
 Future<bool> showAddLocationDialog(BuildContext context, String type) async {
@@ -34,36 +33,4 @@ Future<bool> showAddLocationDialog(BuildContext context, String type) async {
     return true;
   }
   return false;
-}
-
-Widget buildLocationDropdown(
-  BuildContext context,
-  String label,
-  String type,
-  List<String> values,
-  String? selectedValue,
-  void Function(String?) onChanged,
-  VoidCallback onReload,
-  String? Function(String?)? validator,
-) {
-  return Row(
-    children: [
-      Expanded(
-        child: LocationDropdown(
-          label: label,
-          options: values,
-          value: selectedValue,
-          onChanged: onChanged,
-          validator: validator,
-        ),
-      ),
-      IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () async {
-          final added = await showAddLocationDialog(context, type);
-          if (added) onReload();
-        },
-      ),
-    ],
-  );
 }

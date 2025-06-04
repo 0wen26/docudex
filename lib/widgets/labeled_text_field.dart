@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
 
 class LabeledTextField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String label;
-  final String? Function(String?)? validator;
+  final String? hint;
+  final bool isRequired;
+  final TextInputType? keyboardType;
   final bool readOnly;
   final VoidCallback? onTap;
-  final TextInputType? keyboardType;
 
   const LabeledTextField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.label,
-    this.validator,
+    this.hint,
+    this.isRequired = false,
+    this.keyboardType,
     this.readOnly = false,
     this.onTap,
-    this.keyboardType,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
-      validator: validator,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        labelText: label + (isRequired ? '*' : ''),
+        hintText: hint,
+      ),
+      validator: isRequired
+          ? (value) => value == null || value.isEmpty
+              ? '$label es obligatorio'
+              : null
+          : null,
+      keyboardType: keyboardType,
       readOnly: readOnly,
       onTap: onTap,
-      keyboardType: keyboardType,
     );
   }
 }

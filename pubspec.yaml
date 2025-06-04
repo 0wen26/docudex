@@ -28,6 +28,7 @@ dependencies:
   collection: any
   image_picker: any
   get_it: any
+  provider: any
   
 
 dev_dependencies:
