@@ -90,7 +90,8 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
   }
 
   Future<void> _saveDocument() async {
-    if (!_formKey.currentState!.validate() ||
+    if (_isSaving ||
+        !_formKey.currentState!.validate() ||
         selectedCategoryId == null ||
         selectedRoom == null ||
         selectedArea == null ||
@@ -125,7 +126,7 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
       await DatabaseHelper().updateDocument(doc);
     }
 
-    setState(() => _isSaving = false);
+    if (mounted) setState(() => _isSaving = false);
     widget.onSaved?.call();
   }
 
