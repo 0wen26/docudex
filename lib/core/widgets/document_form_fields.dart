@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart' as ndef;
-import '../../data/models/category.dart';
+import 'package:docudex/data/models/category.dart';
 //import 'add_category_dialog.dart';
 import 'location_dialog.dart';
 
