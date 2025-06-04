@@ -1,7 +1,7 @@
 // lib/widgets/location_dialog.dart
 
 import 'package:flutter/material.dart';
-import '../database/database_helper.dart';
+import '../../database/database_helper.dart';
 
 Future<bool> showAddLocationDialog(BuildContext context, String type) async {
   final controller = TextEditingController();

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import '../models/category.dart';
-import '../database/database_helper.dart';
+import '../../data/models/category.dart';
+import '../../database/database_helper.dart';
 
 final List<IconData> availableIcons = [
   Icons.folder,

@@ -1,8 +1,8 @@
 // lib/widgets/document_card.dart
 
 import 'package:flutter/material.dart';
-import 'lib/data/models/document.dart';
-import '../utils/document_utils.dart';
+import '../../data/models/document.dart';
+import '../../utils/document_utils.dart';
 
 class DocumentCard extends StatelessWidget {
   final Document document;
