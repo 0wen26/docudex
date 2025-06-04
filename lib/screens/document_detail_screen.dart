@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../data/models/document.dart';
 import '../data/models/category.dart';
-import '../database/database_helper.dart';
+import '../domain/repositories/document_repository.dart';
+import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 import '../utils/document_utils.dart';
@@ -54,7 +55,7 @@ class DocumentDetailScreen extends StatelessWidget {
                 ),
               );
               if (confirm == true) {
-                await DatabaseHelper().deleteDocument(document.id!);
+                await getIt<DocumentRepository>().deleteDocument(document.id!);
                 if (context.mounted) Navigator.pop(context, true);
               }
             },

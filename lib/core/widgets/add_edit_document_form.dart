@@ -7,7 +7,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import '../../data/models/document.dart';
 import '../../data/models/category.dart';
-import '../../database/database_helper.dart';
+import '../../domain/repositories/document_repository.dart';
+import '../../domain/repositories/category_repository.dart';
+import '../../domain/repositories/location_repository.dart';
+import '../../injection_container.dart';
 import 'document_form_fields.dart';
 import 'add_category_dialog.dart';
 import '../../document_form_controllers.dart';
@@ -41,10 +44,10 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
   }
 
   Future<void> _loadData() async {
-    final cats = await DatabaseHelper().getCategories();
-    final r = await DatabaseHelper().getLocationValues('room');
-    final a = await DatabaseHelper().getLocationValues('area');
-    final b = await DatabaseHelper().getLocationValues('box');
+    final cats = await getIt<CategoryRepository>().getCategories();
+    final r = await getIt<LocationRepository>().getLocationValues('room');
+    final a = await getIt<LocationRepository>().getLocationValues('area');
+    final b = await getIt<LocationRepository>().getLocationValues('box');
 
     if (!mounted) return;
 
@@ -121,9 +124,9 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
     );
 
     if (widget.existingDocument == null) {
-      await DatabaseHelper().insertDocument(doc);
+      await getIt<DocumentRepository>().insertDocument(doc);
     } else {
-      await DatabaseHelper().updateDocument(doc);
+      await getIt<DocumentRepository>().updateDocument(doc);
     }
 
     if (mounted) setState(() => _isSaving = false);

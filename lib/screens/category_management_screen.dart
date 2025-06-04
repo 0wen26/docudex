@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../data/models/category.dart';
-import '../database/database_helper.dart';
+import '../domain/repositories/category_repository.dart';
+import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 
@@ -34,7 +35,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
   }
 
   Future<void> _loadCategories() async {
-    final cats = await DatabaseHelper().getCategories();
+    final cats = await getIt<CategoryRepository>().getCategories();
     setState(() {
       categories = cats;
     });
@@ -102,7 +103,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
         colorHex: hex,
         iconName: selectedIcon.codePoint.toString(),
       );
-      await DatabaseHelper().insertCategory(newCat);
+      await getIt<CategoryRepository>().insertCategory(newCat);
       _loadCategories();
     }
   }
@@ -120,7 +121,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
       ),
     );
     if (confirm == true) {
-      await DatabaseHelper().deleteCategory(id);
+      await getIt<CategoryRepository>().deleteCategory(id);
       _loadCategories();
     }
   }

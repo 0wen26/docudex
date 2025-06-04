@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:docudex/data/models/category.dart';
-import 'package:docudex/database/database_helper.dart';
+import 'package:docudex/domain/repositories/category_repository.dart';
+import 'package:docudex/injection_container.dart';
 
 final List<IconData> availableIcons = [
   Icons.folder,
@@ -117,7 +118,7 @@ Future<bool> showAddCategoryDialog(BuildContext context) async {
       colorHex: hex,
       iconName: selectedIcon.codePoint.toString(),
     );
-    await DatabaseHelper().insertCategory(newCat);
+    await getIt<CategoryRepository>().insertCategory(newCat);
     return true;
   }
 

@@ -1,8 +1,9 @@
 // lib/widgets/location_dialog.dart
 
 import 'package:flutter/material.dart';
-import '../../database/database_helper.dart';
+import '../../domain/repositories/location_repository.dart';
 import '../../widgets/location_dropdown.dart';
+import '../../injection_container.dart';
 
 Future<bool> showAddLocationDialog(BuildContext context, String type) async {
   final controller = TextEditingController();
@@ -29,7 +30,7 @@ Future<bool> showAddLocationDialog(BuildContext context, String type) async {
   );
 
   if (result != null && result.isNotEmpty) {
-    await DatabaseHelper().insertLocation(type, result);
+    await getIt<LocationRepository>().insertLocation(type, result);
     return true;
   }
   return false;

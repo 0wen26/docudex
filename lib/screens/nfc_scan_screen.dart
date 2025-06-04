@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import '../services/nfc_service.dart';
 import '../data/models/document.dart';
-import '../database/database_helper.dart';
 import '../data/models/category.dart';
+import '../domain/repositories/document_repository.dart';
+import '../domain/repositories/category_repository.dart';
+import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 import 'document_detail_screen.dart';
@@ -50,8 +52,8 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
         return;
       }
 
-      final docs = await DatabaseHelper().getDocuments();
-      final cats = await DatabaseHelper().getCategories();
+      final docs = await getIt<DocumentRepository>().getDocuments();
+      final cats = await getIt<CategoryRepository>().getCategories();
 
       final matches = docs.where((doc) => doc.referenceNumber == tagText).toList();
 
