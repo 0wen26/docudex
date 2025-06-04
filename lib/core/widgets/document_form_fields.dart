@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import '../../services/nfc_service.dart';
 import '../../data/models/category.dart';
 //import 'add_category_dialog.dart';
@@ -79,7 +78,7 @@ class _DocumentFormFieldsState extends State<DocumentFormFields> {
 
   Future<void> _readNfcTag() async {
     try {
-      final id = await NfcService.readTagId();
+      final id = await NfcService.readTag();
       if (!mounted) return;
       if (id != null) {
         widget.referenceController.text = id;
