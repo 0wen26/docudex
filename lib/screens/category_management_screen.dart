@@ -92,6 +92,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
         ),
       ),
     );
+    nameController.dispose();
 
     if (result == true && nameController.text.trim().isNotEmpty) {
       final hex = colorToHex(selectedColor);

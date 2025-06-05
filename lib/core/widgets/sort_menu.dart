@@ -22,26 +22,26 @@ class DocumentSortMenu extends StatelessWidget {
       icon: const Icon(Icons.sort),
       initialValue: selected,
       onSelected: onSelected,
-      itemBuilder: (context) => [
-        const PopupMenuItem(
+      itemBuilder: (context) => const [
+        PopupMenuItem(
           value: DocumentSortOption.titleAsc,
-          child: Text('Título A-Z'),
+          child: const Text('Título A-Z'),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DocumentSortOption.titleDesc,
-          child: Text('Título Z-A'),
+          child: const Text('Título Z-A'),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DocumentSortOption.dateAsc,
-          child: Text('Fecha más próxima'),
+          child: const Text('Fecha más próxima'),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DocumentSortOption.dateDesc,
-          child: Text('Fecha más lejana'),
+          child: const Text('Fecha más lejana'),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DocumentSortOption.createdDesc,
-          child: Text('Más reciente creado'),
+          child: const Text('Más reciente creado'),
         ),
       ],
     );

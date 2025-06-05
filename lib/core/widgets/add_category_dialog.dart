@@ -103,6 +103,7 @@ Future<bool> showAddCategoryDialog(BuildContext context) async {
       ),
     ),
   );
+  nameController.dispose();
 
   if (result == true && nameController.text.trim().isNotEmpty) {
     final hex = '#'
