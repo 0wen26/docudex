@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../data/models/document.dart';
 import '../core/widgets/add_edit_document_form.dart';
 import '../widgets/shared/custom_app_bar.dart';
+import '../core/app_theme.dart';
 
 class AddEditDocumentScreen extends StatefulWidget {
   final Document? existingDocument;
@@ -31,7 +32,7 @@ class _AddEditDocumentScreenState extends State<AddEditDocumentScreen> {
 
   Widget _buildForm() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: AppTheme.screenPadding,
       child: AddEditDocumentForm(
         existingDocument: widget.existingDocument,
         onSaved: () => Navigator.pop(context, true),

@@ -4,6 +4,7 @@ import 'screens/document_list_screen.dart';
 import 'injection_container.dart';
 import 'package:provider/provider.dart';
 import 'providers/location_provider.dart';
+import 'core/app_theme.dart';
 
 void main() {
   setupDependencies();
@@ -19,13 +20,7 @@ class ArchivoCentralApp extends StatelessWidget {
       create: (_) => LocationProvider(),
       child: MaterialApp(
         title: 'Archivo Central',
-        theme: ThemeData.dark().copyWith(
-          primaryColor: Colors.blueGrey,
-          scaffoldBackgroundColor: Colors.black,
-          cardColor: Colors.grey[900],
-          textTheme:
-              const TextTheme(bodyMedium: TextStyle(color: Colors.white70)),
-        ),
+        theme: AppTheme.themeData,
         home: const DocumentListScreen(),
       ),
     );
