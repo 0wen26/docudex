@@ -195,6 +195,7 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
           ],
         ),
       ],
+    ) 
     );
   }
 }
