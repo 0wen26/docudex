@@ -27,6 +27,7 @@ Future<bool> showAddLocationDialog(BuildContext context, String type) async {
       ],
     ),
   );
+  controller.dispose();
 
   if (result != null && result.isNotEmpty) {
     await getIt<LocationRepository>().insertLocation(type, result);
