@@ -8,6 +8,7 @@ class LabeledTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool readOnly;
   final VoidCallback? onTap;
+  final FormFieldValidator<String>? validator;
 
   const LabeledTextField({
     super.key,
@@ -18,6 +19,7 @@ class LabeledTextField extends StatelessWidget {
     this.keyboardType,
     this.readOnly = false,
     this.onTap,
+    this.validator,
   });
 
   @override
@@ -28,11 +30,15 @@ class LabeledTextField extends StatelessWidget {
         labelText: label + (isRequired ? '*' : ''),
         hintText: hint,
       ),
-      validator: isRequired
-          ? (value) => value == null || value.isEmpty
-              ? '$label es obligatorio'
-              : null
-          : null,
+      validator: (value) {
+        if (isRequired && (value == null || value.isEmpty)) {
+          return '$label es obligatorio';
+        }
+        if (validator != null) {
+          return validator!(value);
+        }
+        return null;
+      },
       keyboardType: keyboardType,
       readOnly: readOnly,
       onTap: onTap,
