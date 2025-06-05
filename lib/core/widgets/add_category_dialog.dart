@@ -5,6 +5,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:docudex/data/models/category.dart';
 import 'package:docudex/domain/repositories/category_repository.dart';
 import 'package:docudex/injection_container.dart';
+import '../app_theme.dart';
 
 final List<IconData> availableIcons = [
   Icons.folder,
@@ -54,7 +55,7 @@ Future<bool> showAddCategoryDialog(BuildContext context) async {
             const Center(
               child: Text(
                 'Nueva Categoría',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: AppTheme.headingStyle,
               ),
             ),
             const SizedBox(height: 16),
@@ -63,14 +64,14 @@ Future<bool> showAddCategoryDialog(BuildContext context) async {
               decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             const SizedBox(height: 20),
-            const Text('Color', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Color', style: AppTheme.headingStyle),
             const SizedBox(height: 8),
             BlockPicker(
               pickerColor: selectedColor,
               onColorChanged: (color) => selectedColor = color,
             ),
             const SizedBox(height: 20),
-            const Text('Icono', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Icono', style: AppTheme.headingStyle),
             Wrap(
               spacing: 8,
               runSpacing: 8,

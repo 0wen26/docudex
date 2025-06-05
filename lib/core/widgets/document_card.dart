@@ -5,6 +5,7 @@ import 'package:docudex/data/models/document.dart';
 import 'package:docudex/utils/document_utils.dart';
 import 'package:docudex/utils/app_utils.dart';
 import 'package:docudex/utils/icon_utils.dart';
+import '../app_theme.dart';
 
 class DocumentCard extends StatelessWidget {
   final Document document;
@@ -29,6 +30,7 @@ class DocumentCard extends StatelessWidget {
     final icon = iconFromCodePoint(categoryIcon);
 
     return Card(
+      margin: AppTheme.cardPadding,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: borderColor, width: 2),
         borderRadius: BorderRadius.circular(8),

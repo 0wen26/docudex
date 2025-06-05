@@ -14,6 +14,7 @@ import '../core/widgets/document_card.dart';
 import '../core/widgets/search_bar.dart';
 import '../core/widgets/filters_bar.dart';
 import '../core/widgets/sort_menu.dart';
+import '../core/app_theme.dart';
 import '../widgets/shared/custom_app_bar.dart';
 import '../widgets/shared/empty_state.dart';
 import 'add_edit_document_screen.dart';
@@ -193,7 +194,7 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
                 children: [
                   Icon(Icons.folder_open,
                       size: 50, color: Colors.grey[400]),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.elementSpacing),
                   const Text('Aún no hay documentos',
                       style: TextStyle(color: Colors.grey)),
                   const SizedBox(height: 8),
@@ -255,14 +256,14 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
             tooltip: 'Escribir etiqueta NFC',
             child: const Icon(Icons.edit_note),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.elementSpacing),
           FloatingActionButton(
             heroTag: 'nfcRead',
             onPressed: _navigateToNfcRead,
             tooltip: 'Leer etiqueta NFC',
             child: const Icon(Icons.nfc),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.elementSpacing),
           FloatingActionButton(
             heroTag: 'addDoc',
             onPressed: _navigateToAddDocument,
