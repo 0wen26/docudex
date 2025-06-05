@@ -9,6 +9,7 @@ import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
 import '../widgets/forms/icon_selector.dart';
 import '../widgets/shared/custom_app_bar.dart';
+import '../widgets/shared/empty_state.dart';
 
 class CategoryManagementScreen extends StatefulWidget {
   const CategoryManagementScreen({super.key});
