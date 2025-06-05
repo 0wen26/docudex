@@ -185,45 +185,67 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
           IconButton(icon: const Icon(Icons.category), onPressed: _navigateToCategories),
         ],
       ),
-      body: Column(
-        children: [
-          DocumentSearchBar(
-            controller: _searchController,
-            onChanged: (_) => _filterDocuments(),
-          ),
-          DocumentFiltersBar(
-            categories: categories,
-            selectedCategoryId: selectedCategoryId,
-            urgencyFilter: urgencyFilter,
-            onCategorySelected: (id) {
-              setState(() => selectedCategoryId = id);
-              _filterDocuments();
-            },
-            onUrgencySelected: (filter) {
-              setState(() => urgencyFilter = filter);
-              _filterDocuments();
-            },
-          ),
-          Expanded(
-            child: filteredDocuments.isEmpty
-                ? const EmptyState(message: 'No hay documentos que coincidan')
-                : ListView.builder(
-                    itemCount: filteredDocuments.length,
-                    itemBuilder: (context, index) {
-                      final doc = filteredDocuments[index];
-                      final cat = getCategoryById(categories, doc.categoryId);
-                      return DocumentCard(
-                        document: doc,
-                        categoryName: cat.name,
-                        categoryColor: cat.colorHex,
-                        categoryIcon: cat.iconName,
-                        onTap: () => _navigateToDetail(doc),
-                      );
-                    },
+      body: documents.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.folder_open,
+                      size: 50, color: Colors.grey[400]),
+                  const SizedBox(height: 12),
+                  const Text('Aún no hay documentos',
+                      style: TextStyle(color: Colors.grey)),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    icon: const Icon(Icons.add),
+                    label: const Text('Crear primer documento'),
+                    onPressed: _navigateToAddDocument,
                   ),
-          ),
-        ],
-      ),
+                ],
+              ),
+            )
+          : Column(
+              children: [
+                DocumentSearchBar(
+                  controller: _searchController,
+                  onChanged: (_) => _filterDocuments(),
+                ),
+                DocumentFiltersBar(
+                  categories: categories,
+                  selectedCategoryId: selectedCategoryId,
+                  urgencyFilter: urgencyFilter,
+                  onCategorySelected: (id) {
+                    setState(() => selectedCategoryId = id);
+                    _filterDocuments();
+                  },
+                  onUrgencySelected: (filter) {
+                    setState(() => urgencyFilter = filter);
+                    _filterDocuments();
+                  },
+                ),
+                Expanded(
+                  child: filteredDocuments.isEmpty
+                      ? const EmptyState(
+                          message: 'No hay documentos que coincidan')
+                      : ListView.builder(
+                          itemCount: filteredDocuments.length,
+                          itemBuilder: (context, index) {
+                            final doc = filteredDocuments[index];
+                            final cat =
+                                getCategoryById(categories, doc.categoryId);
+                            return DocumentCard(
+                              document: doc,
+                              categoryName: cat.name,
+                              categoryColor: cat.colorHex,
+                              categoryIcon: cat.iconName,
+                              onTap: () => _navigateToDetail(doc),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

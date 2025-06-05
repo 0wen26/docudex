@@ -114,14 +114,28 @@ class _AddEditDocumentFormState extends State<AddEditDocumentForm> {
       updatedAt: now,
     );
 
-    if (widget.existingDocument == null) {
-      await getIt<DocumentRepository>().insertDocument(doc);
-    } else {
-      await getIt<DocumentRepository>().updateDocument(doc);
-    }
+    try {
+      if (widget.existingDocument == null) {
+        await getIt<DocumentRepository>().insertDocument(doc);
+      } else {
+        await getIt<DocumentRepository>().updateDocument(doc);
+      }
 
-    if (mounted) setState(() => _isSaving = false);
-    widget.onSaved?.call();
+      if (mounted) setState(() => _isSaving = false);
+      widget.onSaved?.call();
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSaving = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                const Text('Error al guardar. ¿Quizá el nombre ya existe?'),
+            action:
+                SnackBarAction(label: 'Reintentar', onPressed: _saveDocument),
+          ),
+        );
+      }
+    }
   }
 
   @override
