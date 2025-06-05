@@ -9,6 +9,7 @@ import '../domain/repositories/category_repository.dart';
 import '../injection_container.dart';
 import '../utils/app_utils.dart';
 import '../utils/icon_utils.dart';
+import '../utils/category_utils.dart';
 import 'document_detail_screen.dart';
 import '../widgets/shared/custom_app_bar.dart';
 import '../widgets/shared/empty_state.dart';
@@ -74,12 +75,6 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
     }
   }
 
-  Category _getCategory(int categoryId) {
-    return categories.firstWhere(
-      (cat) => cat.id == categoryId,
-      orElse: () => Category(name: 'Sin categoría', colorHex: '#666666', iconName: '0xe2c7'),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +100,7 @@ class _NfcScanScreenState extends State<NfcScanScreen> {
                               itemCount: matchedDocs.length,
                               itemBuilder: (context, index) {
                                 final doc = matchedDocs[index];
-                                final cat = _getCategory(doc.categoryId);
+                                final cat = getCategoryById(categories, doc.categoryId);
                                 return ListTile(
                                   leading: CircleAvatar(
                                     backgroundColor: hexToColor(cat.colorHex),

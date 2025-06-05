@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../data/models/document.dart';
 import '../data/models/category.dart';
+import '../utils/category_utils.dart';
 import '../injection_container.dart';
 import '../domain/usecases/get_documents.dart';
 import '../domain/repositories/category_repository.dart';
@@ -108,12 +109,6 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
         (urgencyFilter == 'expired' && diff < 0);
   }
 
-  Category _getCategory(int categoryId) {
-    return categories.firstWhere(
-      (cat) => cat.id == categoryId,
-      orElse: () => Category(name: 'Sin categoría', colorHex: '#666666', iconName: '0xe2c7'),
-    );
-  }
 
   void _navigateToAddDocument() async {
     final result = await Navigator.push(
@@ -132,7 +127,7 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
   }
 
   void _navigateToDetail(Document doc) async {
-    final cat = _getCategory(doc.categoryId);
+    final cat = getCategoryById(categories, doc.categoryId);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -216,7 +211,7 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
                     itemCount: filteredDocuments.length,
                     itemBuilder: (context, index) {
                       final doc = filteredDocuments[index];
-                      final cat = _getCategory(doc.categoryId);
+                      final cat = getCategoryById(categories, doc.categoryId);
                       return DocumentCard(
                         document: doc,
                         categoryName: cat.name,
